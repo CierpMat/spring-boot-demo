@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit User</title>
+    <link href="/webjars/bootstrap/5.1.0/css/bootstrap.min.css"
+          rel="stylesheet">
+    <script src="/webjars/bootstrap/5.1.0/js/bootstrap.min.js"></script>
+
+</head>
+<body>
+<div class="container">
+    <div th:replace="/fragments/fragments.html::menu"></div>
+    <form th:object="${user}" method="post" th:action="@{'/mvc/users/' + ${id}}">
+        <div class="mb-3">
+            <label for="firstName" class="form-label">First Name</label>
+            <input th:field="*{firstName}" type="text" class="form-control" id="firstName" aria-describedby="emailHelp">
+        </div>
+        <div class="mb-3">
+            <label for="lastName" class="form-label">Last Name</label>
+            <input th:field="*{lastName}" type="text" class="form-control" id="lastName" aria-describedby="emailHelp">
+        </div>
+        <div class="mb-3">
+            <label for="login" class="form-label">Login</label>
+            <input th:field="*{login}" type="text" class="form-control" id="login" aria-describedby="emailHelp">
+        </div>
+        <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            <input th:field="*{password}" type="text" class="form-control" id="password">
+        </div>
+        <div sec:authorize="hasAuthority('ADMIN')" class="mb-3">
+            <select th:field="*{role.id}" class="form-select form-select-sm" >
+                <option value="">Select role</option>
+                <option th:each="_role:${roles}"
+                        th:value="${_role.id}"
+                        th:text="${_role.name}"
+                ></option>
+            </select>
+        </div>
+        <div sec:authorize="hasAuthority('ADMIN')" class="mb-3 form-check">
+            <input th:field="*{active}" type="checkbox" class="form-check-input" id="active">
+            <label class="form-check-label" for="active">Active</label>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>
+
+</body>
+</html>
